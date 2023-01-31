@@ -29,10 +29,10 @@
             <version>2.6.1</version>
         </dependency>
 
-        <!-- Micrometer Prometheus registry  -->
         <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+            <version>1.4.3.RELEASE</version>
         </dependency>
 
         <dependency>
