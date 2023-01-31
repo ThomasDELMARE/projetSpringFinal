@@ -1,5 +1,6 @@
 package com.example.myfinder.delegate;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
@@ -13,19 +14,83 @@ public class MyFinderServiceDelegate {
     @Autowired
     RestTemplate restTemplate;
 
-    // Call our student service with details : make sure to do http exchange method : call fallback method if my service is down
-    @HystrixCommand(fallbackMethod = "defaultStudentsCall")
-    public String getStudents(String schoolname) {
-        return this.restTemplate.exchange("http://localhost:8098/students/" + schoolname
+    @HystrixCommand(fallbackMethod = "getMoviesFallback")
+    public String getMovies() {
+        return this.restTemplate.exchange("http://localhost:8011/movies/allMovies/"
                 , HttpMethod.GET
                 , null
                 , new ParameterizedTypeReference<String>() {
                 }).getBody();
     }
 
-    // Make a hystrix fallback method
-    private String defaultStudentsCall(String schoolname) {
-        return "Problème avec le microservice, le fallback a été call";
+    @HystrixCommand(fallbackMethod = "getMoviesByNomFilmFallback")
+    public String getMoviesByNomFilm(String nomFilm) {
+        return this.restTemplate.exchange("http://localhost:8011/movies/nom/{nomFilm}"
+                , HttpMethod.GET
+                , null
+                , new ParameterizedTypeReference<String>() {
+                }).getBody();
+    }
+
+    @HystrixCommand(fallbackMethod = "getMoviesByDateFallback")
+    public String getMoviesByDate(String annee) {
+        return this.restTemplate.exchange("http://localhost:8011/movies/date/{annee}"
+                , HttpMethod.GET
+                , null
+                , new ParameterizedTypeReference<String>() {
+                }).getBody();
+    }
+
+    @HystrixCommand(fallbackMethod = "getActeursByFilmFallback")
+    public String getActeursByFilm(String nomFilm) {
+        return this.restTemplate.exchange("http://localhost:8011/actors/nomFilm/{nomFilm}"
+                , HttpMethod.GET
+                , null
+                , new ParameterizedTypeReference<String>() {
+                }).getBody();
+    }
+
+    @HystrixCommand(fallbackMethod = "getActeursFallback")
+    public String getActeurs() {
+        return this.restTemplate.exchange("http://localhost:8011/actors/allActors"
+                , HttpMethod.GET
+                , null
+                , new ParameterizedTypeReference<String>() {
+                }).getBody();
+    }
+
+    @HystrixCommand(fallbackMethod = "getActeursByNomFallback")
+    public String getActeurByNom(String nomActeur) {
+        return this.restTemplate.exchange("http://localhost:8011/actors/nomActeur/{nomActeur}"
+                , HttpMethod.GET
+                , null
+                , new ParameterizedTypeReference<String>() {
+                }).getBody();
+    }
+
+    // Méthodes de fallback
+    private String getMoviesFallback() {
+        return "La méthode 'getMoviesFallback()' n'a pas été appelée car le serveur n'est pas disponible.";
+    }
+
+    private String getMoviesByNomFilmFallback(String nomFilm) {
+        return "Nous n'avons pas pu récupérer la liste des films ayant le nom : " + nomFilm + " car le serveur ne semble pas disponible.";
+    }
+
+    private String getMoviesByDateFallback(String annee){
+        return "Nous n'avons pas pu récupérer la liste des films sortis en : " + annee + " car le serveur ne semble pas disponible.";
+    }
+
+    private String getActeursByFilmFallback(String nomFilm){
+        return "Nous n'avons pas pu récupérer la liste des acteurs pour le film : " + nomFilm + " car le serveur ne semble pas disponible.";
+    }
+
+    private String getActeursFallback(){
+        return "Nous n'avons pas pu récupérer la liste des acteurs car le serveur ne semble pas disponible.";
+    }
+
+    private String getActeursByNomFallback(String nomActeur) {
+        return "Nous n'avons pas pu récupérer la liste des films pour l'acteur : " + nomActeur + " car le serveur ne semble pas disponible.";
     }
 
     @Bean

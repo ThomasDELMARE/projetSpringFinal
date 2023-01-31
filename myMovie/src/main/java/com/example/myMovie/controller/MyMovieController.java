@@ -41,13 +41,13 @@ public class MyMovieController {
             @ApiResponse(code = 404, message = "Not found") }
     )
     @GetMapping("/movies/allMovies")
-    public ArrayList<Film> getMovies() {
-        return this.moviesList;
+    public String getMovies() {
+        return this.moviesList.toString();
     }
 
     @ApiOperation(value = "Get movie by name ", response = Film.class, tags = "getMovieByNomFilm")
     @GetMapping("/movies/nom/{nomFilm}")
-    public ArrayList<Film> getMovieByNomFilm(@PathVariable String nomFilm) {
+    public String getMovieByNomFilm(@PathVariable String nomFilm) {
         ArrayList<Film> filmsParTitreFilm = new ArrayList<Film>();
 
         for(int i = 0; i < this.moviesList.size(); i++){
@@ -56,12 +56,12 @@ public class MyMovieController {
             }
         }
 
-        return filmsParTitreFilm;
+        return filmsParTitreFilm.toString();
     }
 
     @ApiOperation(value = "Get movie by date ", response = Film.class, tags = "getMovieByDate")
     @GetMapping("/movies/date/{dateFilm}")
-    public ArrayList<Film> getMovieByDate(@PathVariable String dateFilm) {
+    public String getMovieByDate(@PathVariable String dateFilm) {
         ArrayList<Film> filmsParDate = new ArrayList<Film>();
 
         for(int i = 0; i < this.moviesList.size(); i++){
@@ -71,28 +71,21 @@ public class MyMovieController {
             }
         }
 
-        return filmsParDate;
+        return filmsParDate.toString();
     }
 
     @ApiOperation(value = "Get movie by actor ", response = Acteur.class, tags = "getActeursByFilm")
-    @GetMapping("/movies/actor/{nomActeur}")
-    public ArrayList<Acteur> getActeursByFilm(@PathVariable String nomActeur) {
+    @GetMapping("/actors/nomFilm/{nomFilm}")
+    public String getActeursByFilm(@PathVariable String nomFilm) {
         ArrayList<Acteur> acteursByFilm = new ArrayList<Acteur>();
 
         for(int i = 0; i < this.moviesList.size(); i++){
-            for(int j = 0; j < this.acteursList.size(); j++){
-                String nomActeurPrincipal = this.moviesList.get(i).getActeurPrincipal().getNom();
-                String prenomActeurPrincipal = this.moviesList.get(i).getActeurPrincipal().getNom();
-                String nomActeurList = this.acteursList.get(j).getNom();
-                String prenomActeurList = this.acteursList.get(j).getPrenom();
-
-                if(nomActeurPrincipal.equals(nomActeurList) && prenomActeurList.equals(prenomActeurPrincipal)){
-                    acteursByFilm.add(this.acteursList.get(j));
-                }
+            if(this.moviesList.get(i).getTitre().equals(nomFilm)){
+                acteursByFilm.add(this.moviesList.get(i).getActeurPrincipal());
             }
         }
 
-        return acteursByFilm;
+        return acteursByFilm.toString();
     }
 
 
@@ -105,13 +98,13 @@ public class MyMovieController {
             @ApiResponse(code = 404, message = "Not found") }
     )
     @GetMapping("/actors/allActors")
-    public ArrayList<Acteur> getActeurs() {
-        return this.acteursList;
+    public String getActeurs() {
+        return this.acteursList.toString();
     }
 
     @ApiOperation(value = "Get actor by nom", response = Acteur.class, tags = "getActeurByNom")
-    @GetMapping("/actors/nom/{nomActeur}")
-    public ArrayList<Acteur> getActeurByNom(@PathVariable String nomActeur) {
+    @GetMapping("/actors/nomActeur/{nomActeur}")
+    public String getActeurByNom(@PathVariable String nomActeur) {
         ArrayList<Acteur> acteursParNom = new ArrayList<Acteur>();
 
         for(int i = 0; i < this.acteursList.size(); i++){
@@ -120,7 +113,7 @@ public class MyMovieController {
             }
         }
 
-        return acteursParNom;
+        return acteursParNom.toString();
     }
 
 
