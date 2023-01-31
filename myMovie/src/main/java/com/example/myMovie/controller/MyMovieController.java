@@ -42,17 +42,29 @@ public class MyMovieController {
     )
     @GetMapping("/movies/allMovies")
     public String getMovies() {
-        return this.moviesList.toString();
+        ArrayList<String> nomFilms = new ArrayList<String>();
+
+        for(int i = 0; i < this.moviesList.size(); i++){
+            nomFilms.add(this.moviesList.get(i).getTitre());
+        }
+
+        return nomFilms.toString();
     }
 
     @ApiOperation(value = "Get movie by name ", response = Film.class, tags = "getMovieByNomFilm")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Not authorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not found") }
+    )
     @GetMapping("/movies/nom/{nomFilm}")
     public String getMovieByNomFilm(@PathVariable String nomFilm) {
-        ArrayList<Film> filmsParTitreFilm = new ArrayList<Film>();
+        ArrayList<String> filmsParTitreFilm = new ArrayList<String>();
 
         for(int i = 0; i < this.moviesList.size(); i++){
             if(this.moviesList.get(i).getTitre().equals(nomFilm)){
-                filmsParTitreFilm.add(this.moviesList.get(i));
+                filmsParTitreFilm.add(this.moviesList.get(i).getTitre());
             }
         }
 
@@ -60,28 +72,40 @@ public class MyMovieController {
     }
 
     @ApiOperation(value = "Get movie by date ", response = Film.class, tags = "getMovieByDate")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Not authorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not found") }
+    )
     @GetMapping("/movies/date/{dateFilm}")
     public String getMovieByDate(@PathVariable String dateFilm) {
-        ArrayList<Film> filmsParDate = new ArrayList<Film>();
+        ArrayList<String> filmsParDate = new ArrayList<String>();
 
         for(int i = 0; i < this.moviesList.size(); i++){
             System.out.println("Fetched year : " + this.moviesList.get(i).getDateDeSortie().getYear());
             if(this.moviesList.get(i).getDateDeSortie().getYear() == Integer.parseInt(dateFilm)){
-                filmsParDate.add(this.moviesList.get(i));
+                filmsParDate.add(this.moviesList.get(i).getTitre());
             }
         }
 
         return filmsParDate.toString();
     }
 
-    @ApiOperation(value = "Get movie by actor ", response = Acteur.class, tags = "getActeursByFilm")
+    @ApiOperation(value = "Get acteurs by film ", response = Acteur.class, tags = "getActeursByFilm")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Not authorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not found") }
+    )
     @GetMapping("/actors/nomFilm/{nomFilm}")
     public String getActeursByFilm(@PathVariable String nomFilm) {
-        ArrayList<Acteur> acteursByFilm = new ArrayList<Acteur>();
+        ArrayList<String> acteursByFilm = new ArrayList<String>();
 
         for(int i = 0; i < this.moviesList.size(); i++){
             if(this.moviesList.get(i).getTitre().equals(nomFilm)){
-                acteursByFilm.add(this.moviesList.get(i).getActeurPrincipal());
+                acteursByFilm.add(this.moviesList.get(i).getActeurPrincipal().getNom());
             }
         }
 
@@ -99,22 +123,32 @@ public class MyMovieController {
     )
     @GetMapping("/actors/allActors")
     public String getActeurs() {
-        return this.acteursList.toString();
+        ArrayList<String> nomActeurs = new ArrayList<String>();
+
+        for(int i = 0; i < this.acteursList.size(); i++){
+            nomActeurs.add(this.acteursList.get(i).getNom());
+        }
+
+        return nomActeurs.toString();
     }
 
     @ApiOperation(value = "Get actor by nom", response = Acteur.class, tags = "getActeurByNom")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Not authorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not found") }
+    )
     @GetMapping("/actors/nomActeur/{nomActeur}")
     public String getActeurByNom(@PathVariable String nomActeur) {
-        ArrayList<Acteur> acteursParNom = new ArrayList<Acteur>();
+        ArrayList<String> acteursParNom = new ArrayList<String>();
 
         for(int i = 0; i < this.acteursList.size(); i++){
             if(this.acteursList.get(i).getNom().equals(nomActeur)){
-                acteursParNom.add(this.acteursList.get(i));
+                acteursParNom.add(this.acteursList.get(i).getNom());
             }
         }
 
         return acteursParNom.toString();
     }
-
-
 }
