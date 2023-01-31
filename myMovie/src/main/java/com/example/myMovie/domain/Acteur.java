@@ -1,11 +1,18 @@
 package com.example.myMovie.domain;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Acteur {
-    String nom, prenom;
+    @ApiModelProperty(notes = "Nom de l'acteur",name="nom",required=true)
+    String nom;
+    @ApiModelProperty(notes = "Prenom de l'acteur",name="prenom",required=true)
+    String prenom;
+    @ApiModelProperty(notes = "Filmographie de l'acteur",name="filmographie",required=true)
     ArrayList<Film> filmographie;
+    @ApiModelProperty(notes = "Date de naissance de l'acteur",name="dateNaissance",required=true)
     Date dateDeNaissance;
 
     public Acteur(String nom, String prenom, ArrayList<Film> filmographie, Date dateDeNaissance){

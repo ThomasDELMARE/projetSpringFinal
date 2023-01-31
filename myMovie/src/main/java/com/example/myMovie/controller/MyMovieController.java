@@ -2,17 +2,22 @@ package com.example.myMovie.controller;
 
 import com.example.myMovie.domain.Acteur;
 import com.example.myMovie.domain.Film;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+@Api(value="MyMovieController")
+@RestController
 public class MyMovieController {
-
-    ArrayList<Film> moviesList = new ArrayList<>();
-    ArrayList<Acteur> acteursList = new ArrayList<>();
+    ArrayList<Film> moviesList = new ArrayList<Film>();
+    ArrayList<Acteur> acteursList = new ArrayList<Acteur>();
 
     // Create movie db
     public MyMovieController(){
@@ -28,15 +33,22 @@ public class MyMovieController {
 
     }
 
-    // Mapping films
+    @ApiOperation(value = "Get all movies ", response = Iterable.class, tags = "getMovies")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Not authorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not found") }
+    )
     @GetMapping("/movies/allMovies")
     public ArrayList<Film> getMovies() {
         return this.moviesList;
     }
 
+    @ApiOperation(value = "Get movie by name ", response = Film.class, tags = "getMovieByNomFilm")
     @GetMapping("/movies/nom/{nomFilm}")
     public ArrayList<Film> getMovieByNomFilm(@PathVariable String nomFilm) {
-        ArrayList<Film> filmsParTitreFilm = new ArrayList<>();
+        ArrayList<Film> filmsParTitreFilm = new ArrayList<Film>();
 
         for(int i = 0; i < this.moviesList.size(); i++){
             if(this.moviesList.get(i).getTitre().equals(nomFilm)){
@@ -47,9 +59,10 @@ public class MyMovieController {
         return filmsParTitreFilm;
     }
 
+    @ApiOperation(value = "Get movie by date ", response = Film.class, tags = "getMovieByDate")
     @GetMapping("/movies/date/{dateFilm}")
     public ArrayList<Film> getMovieByDate(@PathVariable String dateFilm) {
-        ArrayList<Film> filmsParDate = new ArrayList<>();
+        ArrayList<Film> filmsParDate = new ArrayList<Film>();
 
         for(int i = 0; i < this.moviesList.size(); i++){
             System.out.println("Fetched year : " + this.moviesList.get(i).getDateDeSortie().getYear());
@@ -61,9 +74,10 @@ public class MyMovieController {
         return filmsParDate;
     }
 
+    @ApiOperation(value = "Get movie by actor ", response = Acteur.class, tags = "getActeursByFilm")
     @GetMapping("/movies/actor/{nomActeur}")
     public ArrayList<Acteur> getActeursByFilm(@PathVariable String nomActeur) {
-        ArrayList<Acteur> acteursByFilm = new ArrayList<>();
+        ArrayList<Acteur> acteursByFilm = new ArrayList<Acteur>();
 
         for(int i = 0; i < this.moviesList.size(); i++){
             for(int j = 0; j < this.acteursList.size(); j++){
@@ -83,15 +97,22 @@ public class MyMovieController {
 
 
     // Mapping acteurs
-
+    @ApiOperation(value = "Get all the actors ", response = Iterable.class, tags = "getAllActors")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Not authorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not found") }
+    )
     @GetMapping("/actors/allActors")
     public ArrayList<Acteur> getActeurs() {
         return this.acteursList;
     }
 
+    @ApiOperation(value = "Get actor by nom", response = Acteur.class, tags = "getActeurByNom")
     @GetMapping("/actors/nom/{nomActeur}")
     public ArrayList<Acteur> getActeurByNom(@PathVariable String nomActeur) {
-        ArrayList<Acteur> acteursParNom = new ArrayList<>();
+        ArrayList<Acteur> acteursParNom = new ArrayList<Acteur>();
 
         for(int i = 0; i < this.acteursList.size(); i++){
             if(this.acteursList.get(i).getNom().equals(nomActeur)){

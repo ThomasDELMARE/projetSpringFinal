@@ -1,11 +1,18 @@
 package com.example.myMovie.domain;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
 public class Film {
     // On crée le film avec les propriétés
-    String titre, realisateur;
+    @ApiModelProperty(notes = "Titre du film",name="titre",required=true)
+    String titre;
+    @ApiModelProperty(notes = "Realisateur du film",name="realisateur",required=true)
+    String realisateur;
+    @ApiModelProperty(notes = "Acteur principal du film",name="acteurPrincipal",required=true)
     Acteur acteurPrincipal;
+    @ApiModelProperty(notes = "Date de sortie",name="dateSortie",required=true)
     Date dateDeSortie;
 
     public Film(String titre, String realisateur, Acteur acteurPrincipal, Date dateDeSortie){
