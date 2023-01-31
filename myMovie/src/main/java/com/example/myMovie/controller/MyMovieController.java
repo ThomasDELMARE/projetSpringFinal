@@ -151,4 +151,68 @@ public class MyMovieController {
 
         return acteursParNom.toString();
     }
+
+    @ApiOperation(value = "Delete actor by nom", response = Acteur.class, tags = "deleteActeurByNom")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Not authorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not found") }
+    )
+    @GetMapping("/actors/delete/{nomActeur}")
+    public void deleteActeurByNom(@PathVariable String nomActeur) {
+        for(int i = 0; i < this.acteursList.size(); i++){
+            if(this.acteursList.get(i).getNom().equals(nomActeur)){
+                this.acteursList.remove(i);
+            }
+        }
+    }
+
+    @ApiOperation(value = "Delete movie by nom", response = Acteur.class, tags = "deleteMovieByNom")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Not authorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not found") }
+    )
+    @GetMapping("/movie/delete/{nomFilm}")
+    public void deleteMovieByNom(@PathVariable String nomFilm) {
+        for(int i = 0; i < this.moviesList.size(); i++){
+            if(this.moviesList.get(i).getTitre().equals(nomFilm)){
+                this.moviesList.remove(i);
+            }
+        }
+    }
+
+    @ApiOperation(value = "Update movie name", response = Acteur.class, tags = "updateMovieByNom")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Not authorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not found") }
+    )
+    @GetMapping("/movie/update/{nomFilm}")
+    public void updateMovieByNom(@PathVariable String nomFilm) {
+        for(int i = 0; i < this.moviesList.size(); i++){
+            if(this.moviesList.get(i).getTitre().equals(nomFilm)){
+                this.moviesList.get(i).setTitre(nomFilm);
+            }
+        }
+    }
+
+    @ApiOperation(value = "Update actor name", response = Acteur.class, tags = "updateActorByNom")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Not authorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not found") }
+    )
+    @GetMapping("/actor/update/{nomActeur}")
+    public void updateActorByNom(@PathVariable String nomActeur) {
+        for(int i = 0; i < this.acteursList.size(); i++){
+            if(this.acteursList.get(i).getNom().equals(nomActeur)){
+                this.acteursList.get(i).setNom(nomActeur);
+            }
+        }
+    }
 }
