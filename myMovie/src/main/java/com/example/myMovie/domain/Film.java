@@ -4,10 +4,11 @@ import java.util.Date;
 
 public class Film {
     // On crée le film avec les propriétés
-    String titre, realisateur, acteurPrincipal;
+    String titre, realisateur;
+    Acteur acteurPrincipal;
     Date dateDeSortie;
 
-    public Film(String titre, String realisateur, String acteurPrincipal, Date dateDeSortie){
+    public Film(String titre, String realisateur, Acteur acteurPrincipal, Date dateDeSortie){
         super();
         this.titre = titre;
         this.realisateur = realisateur;
@@ -31,11 +32,11 @@ public class Film {
         this.realisateur = realisateur;
     }
 
-    public String getActeurPrincipal() {
+    public Acteur getActeurPrincipal() {
         return acteurPrincipal;
     }
 
-    public void setActeurPrincipal(String acteurPrincipal) {
+    public void setActeurPrincipal(Acteur acteurPrincipal) {
         this.acteurPrincipal = acteurPrincipal;
     }
 
